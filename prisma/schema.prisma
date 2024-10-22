@@ -33,28 +33,33 @@ enum Disponibilidade {
 }
 
 model Store {
-  cnpj      String   @id @unique @db.Char(14)
-  name      String   @map("nome") @db.VarChar(200)
-  industry  String?  @default("alimentacao") @map("segmento")
-  address   String   @map("endereco")
-  phone     String?  @map("telefone") @db.VarChar(100)
-  branchQty Int      @map("qtd_filiais")
-  openingDT DateTime @default(now()) @map("data_hora_abertura")
+  cnpj      String   @id @db.Char(14)
+  name      String   @db.VarChar(50)
+  segment  String?  @default("alimentacao")
+  address   String   
+  phone     String?  
+  quantityBranches Int
+  dateHourOpen DateTime @map("data_hour_open") @db.Timestamp()
 
-  createdAt DateTime @default(now()) @map("criado_em")
-  updatedAt DateTime @updatedAt @map("atualizado_em")
+  createdAt DateTime @default(now()) @map("created_at") @db.Date()
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("lojas")
+  @@map("stores")
 }
 
-model Suplier {
+model Supplier {
   id     String @id @default(uuid()) @db.Uuid
-  name   String @map("nome") @db.VarChar(100)
-  email  String @unique @db.VarChar(50)
-  rating Int    @map("avaliacao")
+  name   String @db.VarChar(50)
+  email  String @db.VarChar(100)
+  rating Decimal    @db.Decimal()
 
-  createdAt DateTime @default(now()) @map("criado_em")
-  updatedAt DateTime @updatedAt @map("atualizado_em")
+  createdAt DateTime @default(now()) @map("created_at") @db.Date()
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  @@map("fornecedores")
+  @@map("suppliers")
+}
+
+enum Available {
+  Yes
+  No
 }
